@@ -1,4 +1,5 @@
 import sys, os
+import asyncio
 from asyncio import get_event_loop, TimeoutError, ensure_future
 from datetime import timedelta, datetime
 
@@ -197,7 +198,9 @@ class Twint:
 
 def run(config, callback=None):
     logme.debug(__name__+':run')
-    get_event_loop().run_until_complete(Twint(config).main(callback))
+    loop = asyncio.new_event_loop()
+    asyncio.set_event_loop(loop)
+    loop.run_until_complete(Twint(config).main(callback))
 
 def Favorites(config):
     logme.debug(__name__+':Favorites')
